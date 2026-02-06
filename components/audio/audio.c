@@ -10,6 +10,7 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/semphr.h"
 
 #include "driver/i2s_std.h"
 #include "driver/gpio.h"
@@ -22,7 +23,8 @@
 #define I2S_SD_OUT 17
 #define I2S_PORT I2S_NUM_0
 
-#define BUTTON 5 // 녹음 버튼
+#define LED 2 // 녹음 시작을 알리는 led
+#define BUTTON 5 // 녹음 및 모드 변경 버튼
 
 #define RATE 44100 // 44.1kHz
 #define BUFFER_SIZE 2048 // PCM 16bit 샘플 개수
@@ -31,12 +33,14 @@ static const char *TAG = "AUDIO";
 
 i2s_chan_handle_t rx_handle; // 녹음용 수신에 사용
 i2s_chan_handle_t tx_handle; // 앰프 출력에 사용
+SemaphoreHandle_t record_sign;
 QueueHandle_t audio_queue;
 
 volatile bool recording = false; // 녹음 진행중인지 확인
 volatile bool stop = false; // 녹음 중단 요청
-volatile effect_mode_t current_mode = FX_CLEAN;
+volatile effect_mode_t current_mode = FX_CLEAN; // 초기 모드 설정
 static uint32_t last_press = 0;
+static uint32_t press_start_time = 0;
 
 typedef struct {
     char     chunkID[4];        // "RIFF"
@@ -127,11 +131,10 @@ static void audio_task(void *pram)
 
             for(int i = 0; i < samples; i++) pcm_buf[i] = (int16_t)(raw_buf[i] >> 16); // 32bit -> 16bit 똥값 지우기 위해서 조절시 입력 소리 조절 가능
 
-            // 실시간 출력
-            i2s_channel_write(tx_handle, pcm_buf, samples * sizeof(int16_t), &bytes_written, portMAX_DELAY);
-
-            // 이펙터 걸기
+            // 이펙터 걸기 (한번만 실행)
             effector_apply(pcm_buf, samples, current_mode);
+            
+            // 실시간 출력
             i2s_channel_write(tx_handle, pcm_buf, samples * sizeof(int16_t), &bytes_written, portMAX_DELAY);
 
             // 녹음
@@ -147,20 +150,51 @@ static void audio_task(void *pram)
     }
 }
 
+void record_control_task(void *pram) 
+{
+    while(1) {
+        if(xSemaphoreTake(record_sign, portMAX_DELAY) == pdTRUE) {
+            if(!recording) {
+                recording = true;
+                stop = false;
+                xTaskCreate(record_task, "record_task", 8192, NULL, 5, NULL);
+                gpio_set_level(LED, 1);
+                ESP_LOGI(TAG, "recording start sign send");
+            }
+            else {
+                stop = true;
+                gpio_set_level(LED, 0);
+                ESP_LOGI(TAG, "recording stop sign send");
+            }
+        }
+    }
+}
+
 // 우선 처리를 위한 ISR 처리
 static void IRAM_ATTR button_isr_handler(void *arg) // 반응 속도를 끌어올리기 위해 IRAM위에 올려 처리
 {
     uint32_t now = xTaskGetTickCountFromISR();
+    int level = gpio_get_level(BUTTON);
 
-    if(now - last_press > pdMS_TO_TICKS(300)) {
-        if(!recording){
-            recording = true;
-            stop = false;
-            xTaskCreate(record_task, "record_task", 8192, NULL, 5, NULL);
+    if(level == 0) { // 버튼을 눌렀을 때
+        press_start_time = now;
+    }
+    else {
+        uint32_t press_duration = now - press_start_time; // 누르고 있던 시간
+
+        if(press_duration < pdMS_TO_TICKS(50)) return; // 예외 처리 (짧게 누르면 노이즈로 판단)
+
+        if(press_duration < pdMS_TO_TICKS(500)) { // 0.5초 미만
+            current_mode = (current_mode + 1) % FX_MODE_MAX; // 마지막 모드에 도달했을때 처음으로 돌리기 위해 나머지 연산자 활용
         }
-        else stop = true;
+        else { // 0.5초 이상
+            BaseType_t noHightask = pdFALSE;
+            xSemaphoreGiveFromISR(record_sign, &noHightask); // 더 높은 우선순위를 가진 테스크가 깨어나지 않음을 판단
 
-        last_press = now;
+            if (noHightask) {
+                portYIELD_FROM_ISR();
+            }
+        }
     }
 }
 
@@ -172,7 +206,7 @@ static void button_init(void)
         .mode = GPIO_MODE_INPUT,
         .pull_up_en = GPIO_PULLUP_ENABLE,
         .pull_down_en = GPIO_PULLDOWN_DISABLE,
-        .intr_type = GPIO_INTR_NEGEDGE
+        .intr_type = GPIO_INTR_ANYEDGE
     };
 
     gpio_config(&io_conf);
@@ -180,11 +214,25 @@ static void button_init(void)
     gpio_isr_handler_add(BUTTON, button_isr_handler, NULL);
 }
 
+// led 초기화
+static void led_init(void) {
+    gpio_config_t io_conf = {
+        .pin_bit_mask = 1ULL << LED,
+        .mode = GPIO_MODE_OUTPUT,
+        .pull_up_en = GPIO_PULLUP_DISABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+    };
+    gpio_config(&io_conf);
+}
+
 // 마이크, 스피커 초기화 및 버튼 초기화 실행
 void audio_init(void)
 {
     audio_queue = xQueueCreate(10, sizeof(int16_t *));
 
+    record_sign = xSemaphoreCreateBinary(); // 녹음 시작을 알릴 세마포어 생성
+    xTaskCreate(record_control_task, "record_ctrl", 2048, NULL, 4, NULL); // 관리 테스크 생성
+    led_init();
     button_init();
     effector_init(RATE);
 

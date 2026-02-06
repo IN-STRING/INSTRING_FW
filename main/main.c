@@ -7,6 +7,5 @@
 void app_main(void)
 {
     sd_card_mount();
-
     audio_init();
 }
