@@ -1,6 +1,7 @@
 #include "audio.h"
 #include "sd_card.h"
 #include "effect.h"
+#include "adc_share.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,6 +15,7 @@
 
 #include "driver/i2s_std.h"
 #include "driver/gpio.h"
+#include "esp_adc/adc_oneshot.h"
 
 #include "esp_log.h"
 
@@ -23,8 +25,9 @@
 #define I2S_SD_OUT 17
 #define I2S_PORT I2S_NUM_0
 
-#define LED 2 // 녹음 시작을 알리는 led
+#define LED 2 // 녹음 중임을 알리는 led
 #define BUTTON 5 // 녹음 및 모드 변경 버튼
+#define ADC_CH ADC_CHANNEL_6
 
 #define RATE 44100 // 44.1kHz
 #define BUFFER_SIZE 2048 // PCM 16bit 샘플 개수
@@ -39,8 +42,8 @@ QueueHandle_t audio_queue;
 volatile bool recording = false; // 녹음 진행중인지 확인
 volatile bool stop = false; // 녹음 중단 요청
 volatile effect_mode_t current_mode = FX_CLEAN; // 초기 모드 설정
-static uint32_t last_press = 0;
 static uint32_t press_start_time = 0;
+volatile float gain = 1.0f;
 
 typedef struct {
     char     chunkID[4];        // "RIFF"
@@ -57,6 +60,25 @@ typedef struct {
     char     subchunk2ID[4];    // "data"
     int32_t  subchunk2Size;
 } __attribute__((packed)) WavHeader;
+
+static void adc_init(void)
+{
+    adc_oneshot_chan_cfg_t config = {
+        .bitwidth = ADC_BITWIDTH_12,
+        .atten = ADC_ATTEN_DB_12
+    };
+
+    adc_oneshot_config_channel(adc_handle, ADC_CH, &config);
+}
+
+static void update_gain(void)
+{
+    int adc_raw;
+    adc_oneshot_read(adc_handle, ADC_CH, &adc_raw);
+
+    // gain 범위: 0.2 ~ 2.0
+    gain = 0.2f + ((float)adc_raw / 4095.0f) * 1.8f;
+}
 
 static void record_task(void *parm)
 {
@@ -124,14 +146,25 @@ static void audio_task(void *pram)
     i2s_channel_enable(rx_handle);
     i2s_channel_enable(tx_handle);
 
-    while(1) // task에서 정지 명령을 받을때 까지 반복
-    {
+    while(1) {
+        update_gain();
+        
         if(i2s_channel_read(rx_handle, raw_buf, 4096, &bytes_read, portMAX_DELAY) == ESP_OK){
             int samples = bytes_read / sizeof(int32_t);
 
-            for(int i = 0; i < samples; i++) pcm_buf[i] = (int16_t)(raw_buf[i] >> 16); // 32bit -> 16bit 똥값 지우기 위해서 조절시 입력 소리 조절 가능
+            for(int i = 0; i < samples; i++) {
+                int32_t sample = (int16_t)(raw_buf[i] >> 16); // 32bit -> 16bit 똥값 지우기 위해서 조절시 입력 소리 조절 가능
 
-            // 이펙터 걸기 (한번만 실행)
+                sample = (int32_t)((float)sample * gain);
+
+                // 클리핑 방지
+                if(sample > 32767) sample = 32767;
+                if(sample < -32768) sample = -32768;
+
+                pcm_buf[i] = (int16_t)sample;
+            }
+
+            // 이펙터 걸기
             effector_apply(pcm_buf, samples, current_mode);
             
             // 실시간 출력
@@ -234,6 +267,7 @@ void audio_init(void)
     xTaskCreate(record_control_task, "record_ctrl", 2048, NULL, 4, NULL); // 관리 테스크 생성
     led_init();
     button_init();
+    adc_init();
     effector_init(RATE);
 
     i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_PORT, I2S_ROLE_MASTER);
