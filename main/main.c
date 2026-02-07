@@ -4,11 +4,14 @@
 #include "adc_share.h"
 #include "oled.h"
 #include "sht30.h"
+#include "wifi.h"
 
 #include <stdio.h>
 
 void app_main(void)
 {
+    wifi_init(); // wifi 초기화
+
     adc_share_init(); // adc 공유 초기화
 
     sd_card_mount(); // sd 카드 마운트 초기화
