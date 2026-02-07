@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "INSTRING_FW",
-    "project_version":    "f51be29-dirty",
+    "project_version":    "e1e9217-dirty",
     "project_path":       "C:/Users/user/Desktop/project/INSTRING_FW",
     "idf_path":           "C:/Users/user/esp/v5.5.2/esp-idf",
     "build_dir":          "C:/Users/user/Desktop/project/INSTRING_FW/build",
@@ -25,8 +25,8 @@
         "COMPONENT_KCONFIGS_PROJBUILD" : "C:/Users/user/esp/v5.5.2/esp-idf/components/bootloader/Kconfig.projbuild;C:/Users/user/esp/v5.5.2/esp-idf/components/esp_app_format/Kconfig.projbuild;C:/Users/user/esp/v5.5.2/esp-idf/components/esp_rom/Kconfig.projbuild;C:/Users/user/esp/v5.5.2/esp-idf/components/esptool_py/Kconfig.projbuild;C:/Users/user/esp/v5.5.2/esp-idf/components/partition_table/Kconfig.projbuild"
     },
     "common_component_reqs": [ "cxx", "newlib", "freertos", "esp_hw_support", "heap", "log", "soc", "hal", "esp_rom", "esp_common", "esp_system", "xtensa" ],
-    "build_components" : [ "adc_share", "app_update", "audio", "bootloader", "bootloader_support", "cxx", "driver", "effect", "efuse", "esp_adc", "esp_app_format", "esp_bootloader_format", "esp_common", "esp_driver_ana_cmpr", "esp_driver_bitscrambler", "esp_driver_dac", "esp_driver_gpio", "esp_driver_gptimer", "esp_driver_i2c", "esp_driver_i2s", "esp_driver_ledc", "esp_driver_mcpwm", "esp_driver_parlio", "esp_driver_pcnt", "esp_driver_rmt", "esp_driver_sdio", "esp_driver_sdm", "esp_driver_sdmmc", "esp_driver_sdspi", "esp_driver_spi", "esp_driver_tsens", "esp_driver_twai", "esp_driver_uart", "esp_driver_usb_serial_jtag", "esp_hw_support", "esp_mm", "esp_partition", "esp_pm", "esp_ringbuf", "esp_rom", "esp_security", "esp_system", "esp_timer", "esp_vfs_console", "espressif__esp-dsp", "espressif__led_strip", "esptool_py", "fatfs", "freertos", "hal", "heap", "log", "main", "mbedtls", "newlib", "partition_table", "piezo", "pthread", "sd_card", "sdmmc", "soc", "spi_flash", "vfs", "wear_levelling", "xtensa", "" ],
-    "build_component_paths" : [ "C:/Users/user/Desktop/project/INSTRING_FW/components/adc_share", "C:/Users/user/esp/v5.5.2/esp-idf/components/app_update", "C:/Users/user/Desktop/project/INSTRING_FW/components/audio", "C:/Users/user/esp/v5.5.2/esp-idf/components/bootloader", "C:/Users/user/esp/v5.5.2/esp-idf/components/bootloader_support", "C:/Users/user/esp/v5.5.2/esp-idf/components/cxx", "C:/Users/user/esp/v5.5.2/esp-idf/components/driver", "C:/Users/user/Desktop/project/INSTRING_FW/components/effect", "C:/Users/user/esp/v5.5.2/esp-idf/components/efuse", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_adc", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_app_format", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_bootloader_format", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_common", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_ana_cmpr", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_bitscrambler", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_dac", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_gpio", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_gptimer", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_i2c", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_i2s", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_ledc", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_mcpwm", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_parlio", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_pcnt", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_rmt", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_sdio", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_sdm", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_sdmmc", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_sdspi", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_spi", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_tsens", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_twai", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_uart", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_usb_serial_jtag", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_hw_support", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_mm", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_partition", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_pm", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_ringbuf", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_rom", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_security", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_system", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_timer", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_vfs_console", "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__esp-dsp", "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__led_strip", "C:/Users/user/esp/v5.5.2/esp-idf/components/esptool_py", "C:/Users/user/esp/v5.5.2/esp-idf/components/fatfs", "C:/Users/user/esp/v5.5.2/esp-idf/components/freertos", "C:/Users/user/esp/v5.5.2/esp-idf/components/hal", "C:/Users/user/esp/v5.5.2/esp-idf/components/heap", "C:/Users/user/esp/v5.5.2/esp-idf/components/log", "C:/Users/user/Desktop/project/INSTRING_FW/main", "C:/Users/user/esp/v5.5.2/esp-idf/components/mbedtls", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib", "C:/Users/user/esp/v5.5.2/esp-idf/components/partition_table", "C:/Users/user/Desktop/project/INSTRING_FW/components/piezo", "C:/Users/user/esp/v5.5.2/esp-idf/components/pthread", "C:/Users/user/Desktop/project/INSTRING_FW/components/sd_card", "C:/Users/user/esp/v5.5.2/esp-idf/components/sdmmc", "C:/Users/user/esp/v5.5.2/esp-idf/components/soc", "C:/Users/user/esp/v5.5.2/esp-idf/components/spi_flash", "C:/Users/user/esp/v5.5.2/esp-idf/components/vfs", "C:/Users/user/esp/v5.5.2/esp-idf/components/wear_levelling", "C:/Users/user/esp/v5.5.2/esp-idf/components/xtensa", "" ],
+    "build_components" : [ "adc_share", "app_update", "audio", "bootloader", "bootloader_support", "cxx", "driver", "effect", "efuse", "esp_adc", "esp_app_format", "esp_bootloader_format", "esp_common", "esp_driver_ana_cmpr", "esp_driver_bitscrambler", "esp_driver_dac", "esp_driver_gpio", "esp_driver_gptimer", "esp_driver_i2c", "esp_driver_i2s", "esp_driver_ledc", "esp_driver_mcpwm", "esp_driver_parlio", "esp_driver_pcnt", "esp_driver_rmt", "esp_driver_sdio", "esp_driver_sdm", "esp_driver_sdmmc", "esp_driver_sdspi", "esp_driver_spi", "esp_driver_tsens", "esp_driver_twai", "esp_driver_uart", "esp_driver_usb_serial_jtag", "esp_hw_support", "esp_mm", "esp_partition", "esp_pm", "esp_ringbuf", "esp_rom", "esp_security", "esp_system", "esp_timer", "esp_vfs_console", "espressif__esp-dsp", "espressif__led_strip", "espressif__ssd1306", "esptool_py", "fatfs", "freertos", "hal", "heap", "log", "main", "mbedtls", "newlib", "oled", "partition_table", "piezo", "pthread", "sd_card", "sdmmc", "soc", "spi_flash", "vfs", "wear_levelling", "xtensa", "" ],
+    "build_component_paths" : [ "C:/Users/user/Desktop/project/INSTRING_FW/components/adc_share", "C:/Users/user/esp/v5.5.2/esp-idf/components/app_update", "C:/Users/user/Desktop/project/INSTRING_FW/components/audio", "C:/Users/user/esp/v5.5.2/esp-idf/components/bootloader", "C:/Users/user/esp/v5.5.2/esp-idf/components/bootloader_support", "C:/Users/user/esp/v5.5.2/esp-idf/components/cxx", "C:/Users/user/esp/v5.5.2/esp-idf/components/driver", "C:/Users/user/Desktop/project/INSTRING_FW/components/effect", "C:/Users/user/esp/v5.5.2/esp-idf/components/efuse", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_adc", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_app_format", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_bootloader_format", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_common", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_ana_cmpr", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_bitscrambler", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_dac", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_gpio", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_gptimer", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_i2c", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_i2s", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_ledc", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_mcpwm", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_parlio", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_pcnt", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_rmt", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_sdio", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_sdm", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_sdmmc", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_sdspi", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_spi", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_tsens", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_twai", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_uart", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_driver_usb_serial_jtag", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_hw_support", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_mm", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_partition", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_pm", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_ringbuf", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_rom", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_security", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_system", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_timer", "C:/Users/user/esp/v5.5.2/esp-idf/components/esp_vfs_console", "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__esp-dsp", "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__led_strip", "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__ssd1306", "C:/Users/user/esp/v5.5.2/esp-idf/components/esptool_py", "C:/Users/user/esp/v5.5.2/esp-idf/components/fatfs", "C:/Users/user/esp/v5.5.2/esp-idf/components/freertos", "C:/Users/user/esp/v5.5.2/esp-idf/components/hal", "C:/Users/user/esp/v5.5.2/esp-idf/components/heap", "C:/Users/user/esp/v5.5.2/esp-idf/components/log", "C:/Users/user/Desktop/project/INSTRING_FW/main", "C:/Users/user/esp/v5.5.2/esp-idf/components/mbedtls", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib", "C:/Users/user/Desktop/project/INSTRING_FW/components/oled", "C:/Users/user/esp/v5.5.2/esp-idf/components/partition_table", "C:/Users/user/Desktop/project/INSTRING_FW/components/piezo", "C:/Users/user/esp/v5.5.2/esp-idf/components/pthread", "C:/Users/user/Desktop/project/INSTRING_FW/components/sd_card", "C:/Users/user/esp/v5.5.2/esp-idf/components/sdmmc", "C:/Users/user/esp/v5.5.2/esp-idf/components/soc", "C:/Users/user/esp/v5.5.2/esp-idf/components/spi_flash", "C:/Users/user/esp/v5.5.2/esp-idf/components/vfs", "C:/Users/user/esp/v5.5.2/esp-idf/components/wear_levelling", "C:/Users/user/esp/v5.5.2/esp-idf/components/xtensa", "" ],
     "build_component_info" : {
         "adc_share": {
             "alias": "idf::adc_share",
@@ -718,6 +718,21 @@
             "sources": [ "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__led_strip/src/led_strip_api.c", "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__led_strip/src/led_strip_rmt_dev.c", "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__led_strip/src/led_strip_rmt_encoder.c", "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__led_strip/src/led_strip_spi_dev.c" ],
             "include_dirs": [ "include", "interface" ]
         },
+        "espressif__ssd1306": {
+            "alias": "idf::espressif__ssd1306",
+            "target": "___idf_espressif__ssd1306",
+            "prefix": "idf",
+            "dir": "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__ssd1306",
+            "type": "LIBRARY",
+            "lib": "__idf_espressif__ssd1306",
+            "reqs": [ "driver" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "C:/Users/user/Desktop/project/INSTRING_FW/build/esp-idf/espressif__ssd1306/libespressif__ssd1306.a",
+            "sources": [ "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__ssd1306/ssd1306.c", "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__ssd1306/ssd1306_fonts.c" ],
+            "include_dirs": [ "include" ]
+        },
         "esptool_py": {
             "alias": "idf::esptool_py",
             "target": "___idf_esptool_py",
@@ -815,10 +830,10 @@
             "dir": "C:/Users/user/Desktop/project/INSTRING_FW/main",
             "type": "LIBRARY",
             "lib": "__idf_main",
-            "reqs": [ "sd_card", "audio", "piezo", "adc_share" ],
-            "priv_reqs": [ "espressif__esp-dsp", "espressif__led_strip" ],
+            "reqs": [ "sd_card", "audio", "piezo", "adc_share", "oled" ],
+            "priv_reqs": [ "espressif__esp-dsp", "espressif__led_strip", "espressif__ssd1306" ],
             "managed_reqs": [],
-            "managed_priv_reqs": [ "espressif__esp-dsp", "espressif__led_strip" ],
+            "managed_priv_reqs": [ "espressif__esp-dsp", "espressif__led_strip", "espressif__ssd1306" ],
             "file": "C:/Users/user/Desktop/project/INSTRING_FW/build/esp-idf/main/libmain.a",
             "sources": [ "C:/Users/user/Desktop/project/INSTRING_FW/main/main.c" ],
             "include_dirs": [ "." ]
@@ -852,6 +867,21 @@
             "file": "C:/Users/user/Desktop/project/INSTRING_FW/build/esp-idf/newlib/libnewlib.a",
             "sources": [ "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/init.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/abort.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/assert.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/heap.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/locks.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/poll.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/pthread.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/random.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/getentropy.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/termios.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/stdatomic.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/time.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/sysconf.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/realpath.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/scandir.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/syscalls.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/reent_syscalls.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/port/esp_time_impl.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/flockfile.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/reent_init.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/newlib_init.c", "C:/Users/user/esp/v5.5.2/esp-idf/components/newlib/src/port/esp_time_impl.c" ],
             "include_dirs": [ "platform_include" ]
+        },
+        "oled": {
+            "alias": "idf::oled",
+            "target": "___idf_oled",
+            "prefix": "idf",
+            "dir": "C:/Users/user/Desktop/project/INSTRING_FW/components/oled",
+            "type": "LIBRARY",
+            "lib": "__idf_oled",
+            "reqs": [ "driver", "piezo" ],
+            "priv_reqs": [ "espressif__ssd1306" ],
+            "managed_reqs": [],
+            "managed_priv_reqs": [ "espressif__ssd1306" ],
+            "file": "C:/Users/user/Desktop/project/INSTRING_FW/build/esp-idf/oled/liboled.a",
+            "sources": [ "C:/Users/user/Desktop/project/INSTRING_FW/components/oled/oled.c" ],
+            "include_dirs": [ "." ]
         },
         "partition_table": {
             "alias": "idf::partition_table",
@@ -2307,10 +2337,10 @@
             "prefix": "idf",
             "dir": "C:/Users/user/Desktop/project/INSTRING_FW/main",
             "lib": "__idf_main",
-            "reqs": [ "sd_card", "audio", "piezo", "adc_share" ],
-            "priv_reqs": [ "espressif__esp-dsp", "espressif__led_strip" ],
+            "reqs": [ "sd_card", "audio", "piezo", "adc_share", "oled" ],
+            "priv_reqs": [ "espressif__esp-dsp", "espressif__led_strip", "espressif__ssd1306" ],
             "managed_reqs": [],
-            "managed_priv_reqs": [ "espressif__esp-dsp", "espressif__led_strip" ],
+            "managed_priv_reqs": [ "espressif__esp-dsp", "espressif__led_strip", "espressif__ssd1306" ],
             "include_dirs": [ "." ]
         },
         "adc_share": {
@@ -2347,6 +2377,18 @@
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
+            "include_dirs": [ "." ]
+        },
+        "oled": {
+            "alias": "idf::oled",
+            "target": "___idf_oled",
+            "prefix": "idf",
+            "dir": "C:/Users/user/Desktop/project/INSTRING_FW/components/oled",
+            "lib": "__idf_oled",
+            "reqs": [ "driver", "piezo" ],
+            "priv_reqs": [ "espressif__ssd1306" ],
+            "managed_reqs": [],
+            "managed_priv_reqs": [ "espressif__ssd1306" ],
             "include_dirs": [ "." ]
         },
         "piezo": {
@@ -2396,6 +2438,18 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "include_dirs": [ "include", "interface" ]
+        },
+        "espressif__ssd1306": {
+            "alias": "idf::espressif__ssd1306",
+            "target": "___idf_espressif__ssd1306",
+            "prefix": "idf",
+            "dir": "C:/Users/user/Desktop/project/INSTRING_FW/managed_components/espressif__ssd1306",
+            "lib": "__idf_espressif__ssd1306",
+            "reqs": [ "driver" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "include_dirs": [ "include" ]
         }
     },
     "debug_prefix_map_gdbinit": "",

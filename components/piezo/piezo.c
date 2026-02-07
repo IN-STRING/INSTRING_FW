@@ -20,9 +20,26 @@ static float fft_input[SAMPLES * 2]; // 실수와 허수 포함
 static float window[SAMPLES];
 
 static float guitar_notes[] = {82.41, 110.00, 146.83, 196.00, 246.94, 329.63};
-static const char* note_names[] = {"6E", "5A", "4D", "3G", "2B", "1E"};
+const char* note_names[] = {"6E", "5A", "4D", "3G", "2B", "1E"};
+
+volatile float diff = 0.0f;
+volatile int note_idx = -1;
 
 static const char *TAG = "PIZEO";
+
+static int find_node(float freq)
+{
+    int closest = 0;
+    float min_diff = 1000.0;
+    for (int i = 0; i < 6; i++) {
+        float diff = fabsf(freq - guitar_notes[i]); // 절댓값으로 계산
+        if (diff < min_diff) {
+            min_diff = diff;
+            closest = i;
+        }
+    }
+    return closest;
+}
 
 static void tuning_task(void *pram)
 {
@@ -59,7 +76,7 @@ static void tuning_task(void *pram)
 
         if (max_mag > 100000.0) { // 임계값 이상일 때만
             float freq = (float)peak_idx * SAMPLING_FREQ / SAMPLES;
-            int note_idx = find_nearest_note(freq);
+            int note_idx = find_node(freq);
             float target_freq = guitar_notes[note_idx];
             float diff = freq - target_freq;
 
@@ -71,20 +88,6 @@ static void tuning_task(void *pram)
 
         vTaskDelay(pdMS_TO_TICKS(150));
     }
-}
-
-static int find_node(float freq)
-{
-    int closest = 0;
-    float min_diff = 1000.0;
-    for (int i = 0; i < 6; i++) {
-        float diff = fabsf(freq - guitar_notes[i]); // 절댓값으로 계산
-        if (diff < min_diff) {
-            min_diff = diff;
-            closest = i;
-        }
-    }
-    return closest;
 }
 
 void piezo_init(void)

@@ -19,6 +19,16 @@ dependencies:
       registry_url: https://components.espressif.com/
       type: service
     version: 3.0.2
+  espressif/ssd1306:
+    component_hash: 102cfc05b1b304862fa3f494e9dd955844bcc5f6cb16596e4ca5df3e6bf9fd0d
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=4.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 1.0.5~1
   idf:
     source:
       type: idf
@@ -26,6 +36,7 @@ dependencies:
 direct_dependencies:
 - espressif/esp-dsp
 - espressif/led_strip
-manifest_hash: 479c17e143d53b16c6b549137a621f06060d9cd4204a49f570620ee1f134a7b1
+- espressif/ssd1306
+manifest_hash: d12796dc5623bc8ab2d682055ac3c8b347009d337df1810577340dbf0f6e7f21
 target: esp32
 version: 2.0.0

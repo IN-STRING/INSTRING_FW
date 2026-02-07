@@ -354,6 +354,16 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("C:/Users/user/Desktop/project/INSTRING_FW/build/esp-idf/espressif__ssd1306/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/Users/user/Desktop/project/INSTRING_FW/build/esp-idf/oled/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("C:/Users/user/Desktop/project/INSTRING_FW/build/esp-idf/espressif__led_strip/cmake_install.cmake")
 endif()
 

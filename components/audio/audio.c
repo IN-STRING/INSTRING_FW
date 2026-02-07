@@ -261,7 +261,7 @@ static void led_init(void) {
 // 마이크, 스피커 초기화 및 버튼 초기화 실행
 void audio_init(void)
 {
-    audio_queue = xQueueCreate(10, sizeof(int16_t *));
+    audio_queue = xQueueCreate(50, sizeof(int16_t *));
 
     record_sign = xSemaphoreCreateBinary(); // 녹음 시작을 알릴 세마포어 생성
     xTaskCreate(record_control_task, "record_ctrl", 2048, NULL, 4, NULL); // 관리 테스크 생성
