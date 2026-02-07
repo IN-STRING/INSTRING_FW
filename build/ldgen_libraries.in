@@ -115,8 +115,10 @@ $<TARGET_FILE:idf::espressif__ssd1306>
 $<TARGET_FILE:idf::oled>
 $<TARGET_FILE:__idf_piezo>
 $<TARGET_FILE:__idf_espressif__ssd1306>
+$<TARGET_FILE:idf::sht30>
 $<TARGET_FILE:idf::espressif__led_strip>
 $<TARGET_FILE:idf::main>
 $<TARGET_FILE:__idf_audio>
 $<TARGET_FILE:__idf_oled>
+$<TARGET_FILE:__idf_sht30>
 $<TARGET_FILE:__idf_espressif__led_strip>
