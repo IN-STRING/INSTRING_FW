@@ -1,4 +1,5 @@
 #include "sht30.h"
+#include "ws.h"
 
 #include <math.h>
 #include "driver/i2c.h"
@@ -36,7 +37,8 @@ void sht30_task(void *pram) // 캡슐화 ㄴㄴ (서버코드를 여따 넣어�
 
                 ESP_LOGI(TAG, "Temp: %.2f C, Humi: %.2f %%", temp, humi);
 
-                // 서버 전송 넣을 것
+                send_sensor_data(temp, humi);
+                ESP_LOGI(TAG, "ws sensor data send done");
             }
         }
 

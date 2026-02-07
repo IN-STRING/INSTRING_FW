@@ -2,6 +2,7 @@
 #include "sd_card.h"
 #include "effect.h"
 #include "adc_share.h"
+#include "ws.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,7 +42,7 @@ QueueHandle_t audio_queue;
 
 volatile bool recording = false; // 녹음 진행중인지 확인
 volatile bool stop = false; // 녹음 중단 요청
-volatile effect_mode_t current_mode = FX_CLEAN; // 초기 모드 설정
+volatile effect_mode_t current_mode = FX_NONE; // 초기 모드 설정
 static uint32_t press_start_time = 0;
 volatile float gain = 1.0f;
 
@@ -82,7 +83,7 @@ static void update_gain(void)
 
 static void record_task(void *parm)
 {
-    char filepath[64]; // 보내는 내용을 담는 배열
+    char filepath[64];
     filename(filepath, sizeof(filepath));
 
     FILE *f = fopen(filepath, "wb"); // 파일 열기
@@ -132,8 +133,14 @@ static void record_task(void *parm)
     fwrite(&header, sizeof(header), 1, f);
     fclose(f);
 
-    ESP_LOGI(TAG, "녹음 완료. 총 용량: %d bytes", total_bytes);
+    ESP_LOGI(TAG, "recoreding sussce, total bytes : %d bytes", total_bytes);
     recording = false;
+
+    if (recording == false) {
+        ESP_LOGI(TAG, "uploding start");
+        send_record_file(filepath);
+    }
+
     vTaskDelete(NULL);
 }
 
@@ -164,11 +171,14 @@ static void audio_task(void *pram)
                 pcm_buf[i] = (int16_t)sample;
             }
 
-            // 이펙터 걸기
-            effector_apply(pcm_buf, samples, current_mode);
-            
-            // 실시간 출력
-            i2s_channel_write(tx_handle, pcm_buf, samples * sizeof(int16_t), &bytes_written, portMAX_DELAY);
+            if (current_mode != FX_NONE) { // FX_NONE이 아닐 때만 소리를 내보냄
+                // 이펙터 걸기
+                effector_apply(pcm_buf, samples, current_mode);
+
+                // 실시간 출력
+                i2s_channel_write(tx_handle, pcm_buf, samples * sizeof(int16_t), &bytes_written, portMAX_DELAY);
+            }
+            else vTaskDelay(pdMS_TO_TICKS(1));
 
             // 녹음
             if (recording) {

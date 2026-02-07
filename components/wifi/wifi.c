@@ -3,11 +3,15 @@
 #include "esp_wifi.h"
 #include "esp_event.h"
 #include "nvs_flash.h"
+#include "freertos/event_groups.h"
 #include "esp_log.h"
 
 // 비밀 유지 ^^
 #define SSID ""
 #define PASSWORD ""
+#define WIFI_CONNECTED_BIT BIT0
+
+static EventGroupHandle_t wifi_event_group;
 
 static const char *TAG = "WIFI";
 
@@ -20,12 +24,16 @@ static void event_handler(void *arg, esp_event_base_t event, int32_t id, void *d
     }
     else if(event == WIFI_EVENT && id == WIFI_EVENT_STA_CONNECTED) {
         ip_event_got_ip_t* event = (ip_event_got_ip_t*) data;
+        xEventGroupSetBits(wifi_event_group, WIFI_CONNECTED_BIT);
         ESP_LOGI(TAG, "IP : " IPSTR, IP2STR(&event->ip_info.ip));
     }
 }
 
 void wifi_init(void)
 {
+    // WS 실행을 막기위한 eventgroup 생성
+    wifi_event_group = xEventGroupCreate();
+
     // nvs 초기화
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -59,4 +67,9 @@ void wifi_init(void)
     esp_wifi_set_config(WIFI_IF_STA, &config);
 
     esp_wifi_start();
+
+    // 연결 될때까지 대기
+    EventBits_t bits = xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT, pdFALSE, pdFALSE, portMAX_DELAY);
+
+    if (bits & WIFI_CONNECTED_BIT) ESP_LOGI(TAG, "waiting end");
 }
