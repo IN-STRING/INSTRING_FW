@@ -2,6 +2,7 @@
 
 #include "esp_websocket_client.h"
 #include <sys/stat.h>
+#include <string.h> 
 #include "esp_log.h"
 
 // 비밀 유지 ^^
@@ -54,20 +55,31 @@ void send_record_file(const char* filepath) {
 
     ESP_LOGI(TAG, "file send start : %s (%d bytes)", filepath, total_size);
 
+    // 파일 전송 시작 알리기
+    char start_msg[128];
+    snprintf(start_msg, sizeof(start_msg), "{\"type\":\"file_start\",\"name\":\"%s\",\"size\":%d}", filepath, total_size);
+
+    esp_websocket_client_send_text(client, start_msg, strlen(start_msg), pdMS_TO_TICKS(1000));
+
+    vTaskDelay(pdMS_TO_TICKS(50));
+
     char *buffer = malloc(4096); // 4KB씩 나누어 전송
     int read_bytes;
-    int sent_bytes = 0;
 
     while ((read_bytes = fread(buffer, 1, 4096, f)) > 0) {
         // WebSocket Binary 데이터로 전송
         esp_websocket_client_send_bin(client, buffer, read_bytes, pdMS_TO_TICKS(5000));
-        sent_bytes += read_bytes;
 
         vTaskDelay(pdMS_TO_TICKS(10)); 
     }
 
     free(buffer);
     fclose(f);
+
+    // 파일 전송 끝 알리기
+    char end_msg[] = "{\"type\":\"file_end\"}";
+    esp_websocket_client_send_text(client, end_msg, strlen(end_msg), pdMS_TO_TICKS(1000));
+
     ESP_LOGI(TAG, "file send sussce!");
 }
 
