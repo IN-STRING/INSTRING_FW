@@ -4,6 +4,7 @@
 
 typedef enum {
     FX_NONE = 0,
+    FX_TUNER,
     FX_OVERDRIVE,
     FX_DISTORTION,
     FX_DELAY,

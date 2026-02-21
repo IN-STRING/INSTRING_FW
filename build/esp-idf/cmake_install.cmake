@@ -374,11 +374,6 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/user/Desktop/project/INSTRING_FW/build/esp-idf/audio/cmake_install.cmake")
-endif()
-
-if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  # Include the install script for the subdirectory.
   include("C:/Users/user/Desktop/project/INSTRING_FW/build/esp-idf/espressif__esp-dsp/cmake_install.cmake")
 endif()
 
@@ -395,6 +390,11 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
   include("C:/Users/user/Desktop/project/INSTRING_FW/build/esp-idf/oled/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/Users/user/Desktop/project/INSTRING_FW/build/esp-idf/audio/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

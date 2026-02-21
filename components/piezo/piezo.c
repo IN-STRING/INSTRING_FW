@@ -1,5 +1,6 @@
 #include "piezo.h"
 #include "adc_share.h"
+#include "effect.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -24,6 +25,7 @@ const char* note_names[] = {"6E", "5A", "4D", "3G", "2B", "1E"};
 
 volatile float diff = 0.0f;
 volatile int note_idx = -1;
+extern volatile effect_mode_t current_mode;
 
 static const char *TAG = "PIZEO";
 
@@ -44,6 +46,12 @@ static int find_node(float freq)
 static void tuning_task(void *pram)
 {
     while(1) {
+        // 튜너 모드가 아니면 연산을 하지 않고 대기 (CPU 절약)
+        if (current_mode != FX_TUNER) {
+            vTaskDelay(pdMS_TO_TICKS(100));
+            continue;
+        }
+
         for(int i = 0; i < SAMPLES; i++) { // 샘플링
             int raw;
             adc_oneshot_read(adc_handle, ADC_CHAN, &raw);
@@ -76,14 +84,17 @@ static void tuning_task(void *pram)
 
         if (max_mag > 100000.0) { // 임계값 이상일 때만
             float freq = (float)peak_idx * SAMPLING_FREQ / SAMPLES;
-            int note_idx = find_node(freq);
+            note_idx = find_node(freq);
             float target_freq = guitar_notes[note_idx];
-            float diff = freq - target_freq;
+            diff = freq - target_freq;
 
             ESP_LOGI(TAG, "Note: %s | Freq: %.2f Hz | Diff: %+.2f Hz", note_names[note_idx], freq, diff);
             // 여기에 디스플레이 호출 예정
             
             if (fabsf(diff) < 0.5) ESP_LOGW(TAG, "PERFECT!");
+        }
+        else {
+            note_idx = -1;
         }
 
         vTaskDelay(pdMS_TO_TICKS(150));

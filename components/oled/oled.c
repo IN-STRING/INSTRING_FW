@@ -1,6 +1,8 @@
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations" // 오류 지우기 용
 #include "ssd1306.h"
+#include "audio.h"
 #include "piezo.h"
+#include "effect.h"
 #include "oled.h"
 
 #include <stdio.h>
@@ -16,7 +18,9 @@
 
 extern volatile float diff;
 extern volatile int note_idx;
+extern volatile bool recording;
 extern const char* note_names[];
+extern volatile effect_mode_t current_mode;
 
 static ssd1306_handle_t oled_dev = NULL;
 
@@ -79,8 +83,25 @@ static void oled_task(void *pram)
 
         smooth_diff = smooth_diff * 0.8f + diff * 0.2f; 
 
-        if (note_idx == -1) ssd1306_draw_string(oled_dev, 25, 25, (uint8_t *)"Ready to Tune", 12, 1);
-        else draw_tuner(note_idx, smooth_diff);
+        if (current_mode == FX_TUNER) {
+            // 튜너 전용 화면
+            if (note_idx == -1) ssd1306_draw_string(oled_dev, 25, 25, (uint8_t *)"Ready to Tune", 12, 1);
+            else draw_tuner(note_idx, diff);
+        }
+        else {
+            // 이펙터 상태 화면
+            char mode_name[20];
+            switch(current_mode) {
+                case FX_OVERDRIVE: strcpy(mode_name, "OVERDRIVE"); break;
+                case FX_DISTORTION: strcpy(mode_name, "DISTORTION"); break;
+                case FX_DELAY: strcpy(mode_name, "DELAY"); break;
+                default: strcpy(mode_name, "CLEAN"); break;
+            }
+            ssd1306_draw_string(oled_dev, 10, 10, (uint8_t *)"EFFECT MODE", 12, 1);
+            ssd1306_draw_string(oled_dev, 10, 30, (uint8_t *)mode_name, 16, 1);
+            
+            if(recording) ssd1306_draw_string(oled_dev, 10, 52, (uint8_t *)"● RECORDING", 12, 1);
+        }
 
         ssd1306_refresh_gram(oled_dev);
 

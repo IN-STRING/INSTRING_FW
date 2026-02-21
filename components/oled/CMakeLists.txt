@@ -1,5 +1,5 @@
 idf_component_register(
     SRCS "oled.c"
     INCLUDE_DIRS "."
-    REQUIRES driver piezo
+    REQUIRES driver piezo effect audio
 )

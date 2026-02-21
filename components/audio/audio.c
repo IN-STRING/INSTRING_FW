@@ -1,6 +1,8 @@
 #include "audio.h"
 #include "sd_card.h"
 #include "effect.h"
+#include "piezo.h"
+#include "oled.h"
 #include "adc_share.h"
 #include "ws.h"
 
@@ -171,14 +173,13 @@ static void audio_task(void *pram)
                 pcm_buf[i] = (int16_t)sample;
             }
 
-            if (current_mode != FX_NONE) { // FX_NONE이 아닐 때만 소리를 내보냄
+            if (current_mode != FX_NONE && current_mode != FX_TUNER) { // FX_NONE이 아닐 때만 소리를 내보냄
                 // 이펙터 걸기
                 effector_apply(pcm_buf, samples, current_mode);
 
                 // 실시간 출력
                 i2s_channel_write(tx_handle, pcm_buf, samples * sizeof(int16_t), &bytes_written, portMAX_DELAY);
             }
-            else vTaskDelay(pdMS_TO_TICKS(1));
 
             // 녹음
             if (recording) {
