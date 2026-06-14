@@ -3,16 +3,18 @@
   "idf.espIdfPathWin": "C:\\Users\\user\\esp\\v5.5.2\\esp-idf",
   "idf.pythonInstallPath": "C:\\Users\\user\\.espressif\\tools\\idf-python\\3.11.2\\python.exe",
   "idf.openOcdConfigs": [
-    "board/esp32-wrover-kit-3.3v.cfg"
+    "board/esp32s3-bridge.cfg"
   ],
   "idf.toolsPathWin": "C:\\Users\\user\\.espressif",
   "idf.customExtraVars": {
-    "IDF_TARGET": "esp32"
+    "IDF_TARGET": "esp32s3"
   },
   "clangd.path": "C:\\Users\\user\\.espressif\\tools\\esp-clang\\esp-19.1.2_20250312\\esp-clang\\bin\\clangd.exe",
   "clangd.arguments": [
     "--background-index",
-    "--query-driver=C:\\Users\\user\\.espressif\\tools\\xtensa-esp-elf\\esp-14.2.0_20251107\\xtensa-esp-elf\\bin\\xtensa-esp32-elf-gcc.exe",
-    "--compile-commands-dir=${workspaceFolder}\\build"
-  ]
+    "--query-driver=C:\\Users\\user\\.espressif\\tools\\xtensa-esp-elf\\esp-14.2.0_20251107\\xtensa-esp-elf\\bin\\xtensa-esp32s3-elf-gcc.exe",
+    "--compile-commands-dir=c:\\Users\\user\\Desktop\\project\\INSTRING_FW\\build"
+  ],
+  "idf.portWin": "COM15",
+  "idf.flashType": "UART"
 }

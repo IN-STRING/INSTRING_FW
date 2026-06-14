@@ -1,14 +1,15 @@
 #include "wifi.h"
 
 #include "esp_wifi.h"
+#include "ws.h"
 #include "esp_event.h"
 #include "nvs_flash.h"
 #include "freertos/event_groups.h"
 #include "esp_log.h"
 
 // 비밀 유지 ^^
-#define SSID ""
-#define PASSWORD ""
+#define SSID "SON"
+#define PASSWORD "33483348"
 #define WIFI_CONNECTED_BIT BIT0
 
 static EventGroupHandle_t wifi_event_group;
@@ -22,10 +23,11 @@ static void event_handler(void *arg, esp_event_base_t event, int32_t id, void *d
         esp_wifi_connect();
         ESP_LOGI(TAG, "reconnecting..");
     }
-    else if(event == WIFI_EVENT && id == WIFI_EVENT_STA_CONNECTED) {
+    else if(event == IP_EVENT && id == IP_EVENT_STA_GOT_IP) { // IP를 받은 뒤에 ws 연결 시작
         ip_event_got_ip_t* event = (ip_event_got_ip_t*) data;
         xEventGroupSetBits(wifi_event_group, WIFI_CONNECTED_BIT);
         ESP_LOGI(TAG, "IP : " IPSTR, IP2STR(&event->ip_info.ip));
+        ws_init(); // ws 초기화
     }
 }
 

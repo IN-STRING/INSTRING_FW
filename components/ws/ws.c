@@ -2,13 +2,18 @@
 
 #include "esp_websocket_client.h"
 #include <sys/stat.h>
-#include <string.h> 
+#include <stdbool.h>
+#include <string.h>
 #include "esp_log.h"
 
 // 비밀 유지 ^^
-#define SERVER_URI ""
+#define SERVER_URI "ws://10.97.121.219:8000/ws/device"
+#define DEVICE_ID 12345
 
 esp_websocket_client_handle_t client = NULL;
+
+esp_websocket_client_handle_t sensor_client = NULL;
+esp_websocket_client_handle_t record_client = NULL;
 
 static const char *TAG = "Websocket";
 
@@ -33,6 +38,9 @@ void send_sensor_data(float temp, float humi) {
         char json_str[64];
         snprintf(json_str, sizeof(json_str), "{\"temp\": %.2f, \"humi\": %.2f}", temp, humi); // 서버랑 잘 맞추기
         esp_websocket_client_send_text(client, json_str, strlen(json_str), pdMS_TO_TICKS(1000));
+    }
+    else {
+        ESP_LOGE(TAG, "[Sensor] server not connected");
     }
 }
 
@@ -64,30 +72,48 @@ void send_record_file(const char* filepath) {
     vTaskDelay(pdMS_TO_TICKS(50));
 
     char *buffer = malloc(4096); // 4KB씩 나누어 전송
+    if (buffer == NULL) {
+        ESP_LOGE(TAG, "send buffer allocation failed");
+        fclose(f);
+        return;
+    }
+
     int read_bytes;
+    bool send_failed = false;
 
     while ((read_bytes = fread(buffer, 1, 4096, f)) > 0) {
         // WebSocket Binary 데이터로 전송
-        esp_websocket_client_send_bin(client, buffer, read_bytes, pdMS_TO_TICKS(5000));
+        if (esp_websocket_client_send_bin(client, buffer, read_bytes, pdMS_TO_TICKS(5000)) < 0) {
+            ESP_LOGE(TAG, "file chunk send failed");
+            send_failed = true;
+            break;
+        }
 
-        vTaskDelay(pdMS_TO_TICKS(10)); 
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
 
     free(buffer);
     fclose(f);
 
+    if (send_failed) {
+        return;
+    }
+
     // 파일 전송 끝 알리기
     char end_msg[] = "{\"type\":\"file_end\"}";
     esp_websocket_client_send_text(client, end_msg, strlen(end_msg), pdMS_TO_TICKS(1000));
 
-    ESP_LOGI(TAG, "file send sussce!");
+    ESP_LOGI(TAG, "file send success!");
 }
 
 void ws_init(void)
 {
+    static char full_uri[128];
+    snprintf(full_uri, sizeof(full_uri), "%s/%d", SERVER_URI, DEVICE_ID);
+
     // 주소 설정
     esp_websocket_client_config_t config = {
-        .uri = SERVER_URI
+        .uri = full_uri
     };
 
     client = esp_websocket_client_init(&config);

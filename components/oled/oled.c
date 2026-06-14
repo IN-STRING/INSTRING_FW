@@ -6,6 +6,7 @@
 #include "oled.h"
 
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -15,6 +16,7 @@
 #define SCL 9
 #define SDA 8 
 #define NUM I2C_NUM_0
+#define OLED_UPDATE_MS 250
 
 extern volatile float diff;
 extern volatile int note_idx;
@@ -34,7 +36,7 @@ static void oled_init(void)
         .scl_io_num = SCL,
         .sda_pullup_en = GPIO_PULLUP_ENABLE,
         .scl_pullup_en = GPIO_PULLUP_ENABLE,
-        .master.clk_speed = 400000
+        .master.clk_speed = 100000
     };
     
     i2c_param_config(NUM, &config);
@@ -43,10 +45,10 @@ static void oled_init(void)
 
 static void draw_tuner(int note_idx, float diff)
 {
-    if (note_idx < 0 || note_names[note_idx] == NULL) return; // 예외 처리
+    if (note_idx < 0 || note_idx >= 6 || note_names[note_idx] == NULL) return; // 예외 처리
 
     char note_buf[8];
-    sprintf(note_buf, "%s", note_names[note_idx]);
+    snprintf(note_buf, sizeof(note_buf), "%s", note_names[note_idx]);
 
     // 공식 라이브러리 커스텀 폰트가 없다면 위치 조절로 크게 보이게 처리
     ssd1306_draw_string(oled_dev, 56, 4, (uint8_t *)note_buf, 16, 1);
@@ -86,7 +88,7 @@ static void oled_task(void *pram)
         if (current_mode == FX_TUNER) {
             // 튜너 전용 화면
             if (note_idx == -1) ssd1306_draw_string(oled_dev, 25, 25, (uint8_t *)"Ready to Tune", 12, 1);
-            else draw_tuner(note_idx, diff);
+            else draw_tuner(note_idx, smooth_diff);
         }
         else {
             // 이펙터 상태 화면
@@ -100,12 +102,12 @@ static void oled_task(void *pram)
             ssd1306_draw_string(oled_dev, 10, 10, (uint8_t *)"EFFECT MODE", 12, 1);
             ssd1306_draw_string(oled_dev, 10, 30, (uint8_t *)mode_name, 16, 1);
             
-            if(recording) ssd1306_draw_string(oled_dev, 10, 52, (uint8_t *)"● RECORDING", 12, 1);
+            if(recording) ssd1306_draw_string(oled_dev, 10, 52, (uint8_t *)"REC", 12, 1);
         }
 
         ssd1306_refresh_gram(oled_dev);
 
-        vTaskDelay(pdMS_TO_TICKS(50));
+        vTaskDelay(pdMS_TO_TICKS(OLED_UPDATE_MS));
     }
 }
 

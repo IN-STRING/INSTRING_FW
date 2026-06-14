@@ -49,5 +49,5 @@ direct_dependencies:
 - espressif/led_strip
 - espressif/ssd1306
 manifest_hash: e4df36c2f14b68ea9084952c0e8296dadbbc1db5d0c46b32760c9635d166e2f6
-target: esp32
+target: esp32s3
 version: 2.0.0
